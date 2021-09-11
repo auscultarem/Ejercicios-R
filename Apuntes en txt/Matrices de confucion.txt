@@ -1,0 +1,16 @@
+
+cp$Perf <- ordered(cp$Perf, levels = c("Low","Medium", "High")) # se le da un significado de orden a la variable.
+cp$Pred <- ordered(cp$Pred, levels = c("Low", "Medium", "High"))# se le da un significado de orden a la variable.
+
+
+table <- table(cp$Perf, cp$Pred, dnn = c("Actual", "Predecido"))
+table
+
+prop.table(table)
+
+round(prop.table(table, 1)*100, 2) # Obtengo el valor procentual por filas que sumados dan 100%
+round(prop.table(table, 2)*100, 2) #Obtengo el valor porcentual por columnas que sumados dan 100%
+
+barplot(table, legend = TRUE,
+        xlab = "Nota predecida por el modelo")
+summary(table)

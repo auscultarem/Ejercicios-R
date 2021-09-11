@@ -1,0 +1,40 @@
+data <- read.csv("auto-mpg.csv",
+                 stringsAsFactors = FALSE)
+
+
+#index by position, como realizar subconjuntos mediante selecionando filas y columnas. idenx
+data[1:5, 8:9]
+data <- read.csv("auto-mpg.csv",
+                 stringsAsFactors = FALSE)
+
+#index by position, como realizar subconjuntos mediante selecionando filas y columnas. idenx
+data[1:5, 8:9]
+data[1:5, c(8,9)] # se puede indicar de forma explicita las dos columnas para selecionarlas.
+
+#index by Name
+data[1:5, c("model_year","car_name")]
+
+## MIN & MAX
+data[data$mpg == max(data$mpg) | data$mpg == min(data$mpg),] #Accedo al valor maximo y minimo del data frame.
+
+#Filtros con condicones
+data[data$mpg > 30 & data$cylinders == 6, c("car_name","mpg")]
+
+data[data$mpg > 30 & data$cyl == 6, c("car_naem","mpg")] # se puede usar abrebiaciones cuando el nombre de la 
+                                                         # columna es muy larga.
+
+#Funcion subset
+subset(data, mpg >30 & cylinders == 6, select = c("car_name", "mpg")) # si esta mal escrita una columna marcara error.
+
+#Excluir columnas
+data[1:5, c(-1,-9)]
+data[1:5, -c(1,9)]
+#data[1:5, -c("No", "car_name")]  no se puede realizar
+
+data[data$mpg %in% c(15,20), c("car_name", "mpg")] # Seleciono las milas por galon que esten entre 15 y 20
+                                                   # con el nombre de la columna y las illas por galon.  
+#R tiende a reciclar el vector
+data[1:2, c(F,F,T)]
+
+# Filtra las filas de 5 en 5 y las columnas de tres en tres.
+data[c(F,F,F,F,T), c(F,F,T)]

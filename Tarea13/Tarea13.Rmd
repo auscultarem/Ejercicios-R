@@ -1,0 +1,115 @@
+---
+title: "Tarea 13"
+author: "Jesus Castellanos"
+date: "7/7/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r echo=FALSE}
+#getwd()
+grades <- read.table("C:/Users/auscu/OneDrive/Documents/Ejercicios R/Tarea13/grades.txt")
+head(grades, 5)
+str(grades)
+```
+
+Obtener la media, la mediana y la moda redondeada a dos crifras del todo el grupo y de forma individual de cada grupo.
+De forma general se obtiene:
+
+```{r echo=FALSE}
+grades1 <- grades[-1]
+summary(grades1)
+grades2mo <- as.numeric(names(which(table(grades1) == max(table(grades1)))))
+#grades2mo
+grades1f <- max(table(grades1))
+#grades1f
+```
+
+Donde la moda es el valor de `r grades2mo` con una frecuencia de `r grades1f`.
+
+Para el caso de insdustrial se tiene:
+
+```{r echo=FALSE}
+industrial <- grades[grades$estudio == "Industrial", ] #Me quedo con todos los renglones donde aparezca Industrial.
+industrial1 <-industrial[-1] #Elimino la primer columna con todos los nonbres de industrial 
+summary(industrial1) #se calcula la media, mediana
+industrialmo <- round(as.numeric(names(which(table(industrial1) == max(table(industrial1))))),2) #Se obtiene la moda
+industrialf <- round(max(table(industrial1)),2) #se obtiene la frecuencia
+mejornotaindus <- round(max(industrial1),2)
+```
+
+Donde la moda es le valor de `r industrialmo` con una frecuencia de `r industrialf`. La mejor nota de los industriales
+fue `r mejornotaindus`
+
+
+Para el caso Informatica se tiene:
+```{r echo=FALSE}
+informatica <- grades[grades$estudio == "Informatica", ] #Me quedo con todos los renglones donde aparezca Informatica.
+informatica1 <- informatica[-1] #Elimino la primer columna con todos los nombres de informatica
+summary(informatica1)
+informaticamo <- round(as.numeric(names(which(table(informatica1)== max(table(informatica1))))), 2)
+informaticaf <- max(table(informatica1))
+#media <- sum(informatica1)/ nrow(informatica1) # asi se calcual la media en R
+#media
+mejornotainfor <- round(max(informatica1),2)
+#a<-diff(range(informatica1))
+#a
+```
+Donde la moda es le valor de `r informaticamo` con una frecuencia de `r informaticaf`. La mejor nota de informatica1 fue `r mejornotainfor`
+
+Para el caso de Telematica se obtine:
+```{r echo=FALSE}
+telematica <- grades[ grades$estudio == "Telematica", ]# Me quedo con todos los renglones donde tenga Telematica
+telematica1 <- telematica[-1] #Elimino la primer columna con todos los nombres de telematica.
+summary(telematica1)
+telematicamo <- round(as.numeric(names(which(table(telematica1) == max(table(telematica1))))),2)# se obtine la moda
+telematicaf <- max(table(telematica1)) # se obtiene la frecuncia
+mejornotatelema <- round(max(telematica1), 2)
+```
+
+Donde la moda es el valor de `r telematicamo` con una frecuencia de `r telematicaf`.La mejor nota de telematica1 fue
+`r mejornotatelema`
+
+para el caso de Matematicas se obtiene:
+```{r echo=FALSE}
+mates <- grades[ grades$estudio == "Mates", ]# Me quedo con todos los renglones que tenga Mates
+mates1 <- mates[-1] #Elimino la priemer columna con todos los nombre de mates
+summary(mates1)
+matesmo <- round(as.numeric(names(which(table(mates1) == max(table(mates1))))),2)#Se obtiene la moda
+matesf <- max(table(mates1))# Se obtiene la frecuencia
+mejornotamates <- round(max(mates1),2) #Diferencias enntre maximo y minimo de las notas.
+```
+
+Donde la moda es el valor de `r matesmo` con una frecuencia de `r matesf`.La mejor nota de Matematicas fue 
+`r mejornotamates`.
+
+Las notas de los informaticos y matematicos estan por encima de la media de las notas de los estudiantes.
+
+Podemos observar que en el grupo de indutriales varian mas las notas al obervar que la diferencia entre maximo menos el minimo hay mayor diferencia.
+
+```{r echo=FALSE, fig.cap = "Diagrama de caja y bigotes\n de las notas de los estudiantes"}
+boxplot(industrial1$nota,informatica1$nota,telematica1$nota,mates1$nota,
+        main = "Diarama de caja y bigote de las notas de los Estudiantes",
+        col = c("chocolate", "cadetblue1","cyan", "gold"),
+        names = c("Industriales","Informaticos","Telematicos","Matematicos"),
+        notch = TRUE
+)
+medias_estudiantes <- c(mean(industrial1$nota),mean(informatica1$nota),mean(telematica1$nota),mean(mates1$nota))
+points(medias_estudiantes, col = "pink", pch =15)
+a<-sd(industrial1$nota)
+b<-sd(informatica1$nota)
+c<-sd(telematica1$nota)
+d<-sd(mates1$nota)
+vector <- c(a,b,c,d)
+max(vector)
+```
+
+Podemos observa que existen valores atipicos en las cajas de los industriales, informaticos y telematicos.
+La mayor variedad de notas esta en el grupo de los matematicos.

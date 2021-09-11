@@ -1,0 +1,26 @@
+auto <- read.csv("auto-mpg.csv", header = TRUE, sep = ",",
+                 na.strings = "",
+                 stringsAsFactors = FALSE)
+names(auto)
+
+#read.csv2 == read.csv("filename", sep = ";", dec = ",")
+#sep = "t" separcion mediante tabuladores.
+
+auto_noheader <- read.csv("auto-mpg-noheader.csv", header = FALSE) # Si no hay cabecera en dataframe hay que poner header = False.
+head(auto_noheader, 4)
+
+auto_no_sense <- read.csv("auto-mpg-noheader.csv")
+head(auto_no_sense, 4)
+
+auto_custom_header <- read.csv("auto-mpg-noheader.csv", header = FALSE,
+                               col.names = c("numero", "millas_por_galon", "cilindrada", "dezplazamiento",
+                                             "caballos_de_potencia", "peso", "aceleracion" , "año", "modelo"
+                               )
+)
+head(auto_custom_header, 2)
+
+who_from_internet <- read.csv("https://frogames.es/course-contents/r/intro/tema1/WHO.csv", header = TRUE)
+
+#NA : Not available
+#na.string = "" los valores de NA seran tratados como valores en blanco.
+#as.caracter() para covertir a carater.

@@ -1,0 +1,9 @@
+student_data <- read.fwf("student-fwf.txt", widths = c(4, 15, 20, 15, 4)
+                         col.names = c("id", "nombre", "email", "carrera"))
+
+students_data_header <- read.fwf("student-fwf-header.txt", widths = c(4, 15, 20, 15, 4),
+                                 header = TRUE, sep = "\t", skip = 2
+                                 )
+student_data_no_email <- read.fwf("student-fwf.txt", widths = c(4, 15, -20, 15, 4),
+                         col.names = c("id", "nombre", "carrera", "año")
+)

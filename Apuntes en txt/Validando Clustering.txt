@@ -1,0 +1,32 @@
+protein <- read.csv("protein.csv")
+rownames(protein) = protein$Country
+protein$Country = NULL
+protein.scaled <- as.data.frame(scale(protein))
+
+install.packages(c("fpc", "NbClust"))
+
+library(factoextra)
+library(cluster)
+library(fpc)
+library(NbClust)
+
+nb <- NbClust(protein.scaled, distance = "euclidean",
+              min.nc = 2, max.nc = 12,
+              method = "ward.D2", index = "all")
+
+fviz_nbclust(nb) + theme_minimal()
+
+km.res <- kmeans(protein.scaled, 3)
+sil.km <- silhouette(km.res$cluster,
+                     dist(protein.scaled))
+
+sil.sum <- summary(sil.km)
+sil.sum
+
+fviz_silhouette(sil.km)
+
+dd <- dist(protein.scaled, method = "euclidean")
+km_stats <- cluster.stats(dd, km.res$cluster)
+km_stats$within.cluster.ss
+km_stats$clus.avg.silwidths
+km_stats$dunn

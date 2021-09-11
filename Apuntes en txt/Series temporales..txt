@@ -1,0 +1,39 @@
+AMZN <- read.csv("AMZN.csv", stringsAsFactors = FALSE)
+AAPL <- read.csv("AAPL.csv", stringsAsFactors = FALSE)
+FB <- read.csv("FB.csv", stringsAsFactors = FALSE)
+GOOG <- read.csv("GOOG.csv", stringsAsFactors = FALSE)
+
+AMZN <- AMZN[AMZN$Date >= "2008-01-01",]
+AAPL <- AAPL[AAPL$Date >= "2008-01-01",]
+GOOG <- GOOG[GOOG$Date >= "2008-01-01",]
+
+#se realiza un casting de la columnafecha.
+AAPL$Date <- as.Date(AAPL$Date)
+AMZN$Date <- as.Date(AMZN$Date)
+FB$Date <- as.Date(FB$Date)
+GOOG$Date <- as.Date(GOOG$Date)
+
+library(ggplot2)
+
+ggplot(AAPL, aes(Date, Close))+
+  geom_line(aes(color= "Apple"))+
+  geom_line(data = AMZN, aes(color = "Amazon"))+
+  geom_line(data = FB, aes(color = "Facebook"))+
+  geom_line(data = GOOG,aes(color="Google"))+
+  labs(color="Legend")+
+  scale_color_manual("",
+                     breaks = c("Apple","Facebook","Amazon","Google"),
+                     values = c("gray","yellow","blue","red"))+
+                     ggtitle("Comparaciones de cierre de stocks")+
+                     theme(plot.title =  element_text(lineheight = 0.7, face ="bold"))
+
+#Cargar datos en tiempo real
+install.packages("quantmod")
+library(quantmod)
+
+getSymbols("AAPL")
+barChart(AAPL)
+
+chartSeries(AAPL, TA = "NULL")
+
+chartSeries(AAPL[,4], TA = "addMACD()")

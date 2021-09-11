@@ -1,0 +1,48 @@
+```{r echo=FALSE}
+getwd()
+grades <- read.table("/home/jovyan/grades.txt",
+                     header = TRUE
+)
+head(grades, 5)
+str(grades)
+```
+
+Obtener la media, la mediana y la moda redondeada a dos crifras del todo el grupo y de forma individual de cada grupo.
+De forma general se obtiene:
+
+```{r echo=FALSE}
+grades1 <- grades[-1]
+summary(grades1)
+grades2mo <- as.numeric(names(which(table(grades1) == max(table(grades1)))))
+#grades2mo
+grades1f <- max(table(grades1))
+#grades1f
+```
+
+Donde la moda es el valor de `r grades2mo` con una frecuencia de `r grades1f`.
+
+Para el caso de insdustrial se tiene:
+
+```{r echo=FALSE}
+industrial <- grades[grades$estudio == "Industrial", ] #Me quedo con todos los renglones donde aparezca Industrial.
+industrial1 <-industrial[-1] #Elimino la primer columna con todos los nonbres de industrial 
+summary(industrial1) #se calcula la media, mediana
+industrialmo <- round(as.numeric(names(which(table(industrial1) == max(table(industrial1))))),2) #Se obtiene la moda
+industrialf <- round(max(table(industrial1)),2) #se obtiene la frecuencia
+```
+
+Donde la moda es le valor de `r industrialmo` con una frecuencia de `r industrialf`.
+
+
+Para el caso Informatica se tiene:
+
+```{r echo= FALSE}
+informatica <- grades[grades$estudio == "Informatica", ] #Me quedo con todos los renglones donde aparezca Informatica.
+informatica1 <- informatica[-1] #Elimino la primer columna con todos los nombres de informatica
+summary(informatica1)
+informaticamo <- round(as.numeric(names(which(table(informatica1)== max(table(informatica1))))), 2)
+informaticaf <- max(table(informatica1))
+media <- sum(informatica1)/ nrow(informatica1) # asi se calcual la media en R
+media
+```
+Donde la moda es le valor de `r informaticamo` con una frecuencia de `r informaticaf`.

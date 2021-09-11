@@ -1,0 +1,57 @@
+install.packages("caret")
+library(caret)
+auto <- read.csv("auto-mpg.csv")
+
+#Habara data frames donde sera necesario convertir a factores alguna columna
+#con la que e estara trabajando
+
+auto$cylinders <- factor(auto$cylinders,
+                         levels= c(3,4,5,6,8),
+                         labels = c("3c","4c","5c","6c","8c"))
+
+#Se crean particiones
+set.seed(2018)
+# se pretende predecir el consumo del coche en funcion del resto de categorias
+t.id <- createDataPartition(auto$mpg, p = 0.7, list = FALSE)
+names(auto)
+
+#Se procede a realizar un modelo lineal segreggando las columnas que
+#no nos serviran para nuestro analisis
+mod <- lm(mpg ~ ., data = auto[t.id, -c(1,8,9)])
+
+#
+mod
+
+# 37.284202 +variable independiente. solo un de los factores de abajo se cumple
+# + 6.231475*4C + 8.248195*5C + 2.131026*6C + 4.568171*8C
+# + 0.002245*displacement - -0.057543*horsepower - 0.004665*weight
+# + 0.050745*acceleration
+
+# nos dice cul es el valor minimo de nuestro error y nos hace un resumen
+# de nuestro modelo.
+summary(mod)
+
+# se puede realziar un diagra de caja y bigote para visualizar el error
+# en nuestro modelo
+boxplot(mod$residuals)
+
+#Si queremos una predicion
+pred <- predict(mod, auto[-t.id,-c(1,8,9)])
+sqrt(mean((pred - auto[-t.id,]$mpg)^2))
+
+par(mfrow = c(2,2))
+plot(mod)
+
+# Si queremos que nuestro modelo tome de referencia los coches de
+# 4C porque son los cohes que hay mas
+auto <- within(auto,
+               cylinders <- relevel(cylinders, ref="4c"))
+
+mod<-lm(mpg ~ . ,data = auto[t.id, -c(1,8,9)])
+mod
+
+pred <- predict(mod, auto[-t.id, -c(1,8,9)])
+sqrt(mean((pred - auto[-t.id,]$mpg)^2))
+
+par(mfrow = c(2,2))
+plot(mod)

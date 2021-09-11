@@ -1,0 +1,10 @@
+data <- read.csv("auto-mpg.csv",stringsAsFactors = FALSE)
+
+#crea una lista anidada por cada elemento que existe en la columna.
+car_list <- split(data, data$cylinders)
+car_list[1] #con este comando estoy seleccionado el primer elemento de la lista, un dataframe con carros de tres cilindros.
+car_list[[1]] # Accede al dataframe de la lista
+
+names(car_list[[1]]) #De esta manera accedo alos  nombres de las columnas de la lista de carros  que tiene 3 cilindros.
+
+car_list[[1]]$model_year #Con este comando puedo acceder a los elementos de la lista  ejemplo:model_yeaer

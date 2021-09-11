@@ -1,0 +1,99 @@
+---
+title: "Bebes"
+author: "Jesus Castellanos"
+date: "7/2/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r echo=FALSE}
+library(MASS)
+df <- birthwt
+df <- setNames(df,c("PBajo", "EMadre", "PMadre","Raza","Fuma","Pre","Hiper","Irrita","Visitas","PBebe"))
+head(df, 5)
+str(df)
+Pesobajo <- df[,"PBajo"]
+Raza <- df[ ,"Raza"]
+PesoBeBe <- df[ ,"PBebe"]
+datos1 <- data.frame(Pesobajo, Raza)
+table(datos1)
+prop.table(table(datos1))
+barplot(table(datos1), names= c("Blanca", "Negra", "OtraRaza"),
+        beside=TRUE,
+        main = "Grafica que representa si La raza de la Madre\n influye en el Peso del Bebe ",
+        legend.text = c("Peso Menor 2.5Kg","Peso mayor 2.5KG"),
+        col = c("firebrick", "forestgreen"),
+        ylim = c(0, 75)
+       
+)
+
+barplot(prop.table(table(datos1)), names= c("Blanca", "Negra", "OtraRaza"),
+        beside=TRUE,
+        main = "Grafica que representa si La raza de la Madre\n influye en el Peso del Bebe ",
+        legend.text = c("Peso Menor 2.5Kg","Peso mayor 2.5KG"),
+        col = c("firebrick", "forestgreen"),
+        ylim = c(0, 1)
+       
+)
+
+dfa <- data.frame(Pesobajo, Raza, PesoBeBe)
+dfa1 <- dfa[dfa == "1",]
+dfa1
+```
+
+Tabla de mosaico del problema anterior
+```{r}
+plot(table(datos1),
+    main = "Grafica que representa si la raza de la madre\n influye en el peso del Bebe ",
+    col = c("blanchedalmond","bisque4","burlywood"),
+    xlab = c("0.-Peso menor a 2.5K", "1.-Peso Mayor a 2.5Kb"),
+    ylab = c("1.-Blanca\n", "2.-Negra\n", "3.-Otra raza\n")
+)
+
+```
+
+Se puede obersevar que las muejeres de raza blanca tienden a dar a luz a bebes con pesos menores a los 2.5Kg
+
+Veremos si una madre fumadora influye en el peso del bebe.
+
+```{r, echo=FALSE}
+fumadora <- df[,"Fuma"]
+datos2 <- data.frame(Pesobajo,fumadora)
+table(datos2)
+barplot(table(datos2), beside = TRUE,
+        names = c("Peso menor a 2.5Kg", "Peso Mayor a 2.5Kg"),
+        ylim = c(0, 85),
+        col = c("firebrick", "forestgreen"),
+        main = "Grafico que represena si una Madre que fuma\n influye en el peso del Bebe",
+       legend.text = c("Madre fumadora", "Madre no fumadora")
+)
+```
+
+Veremos si una madre hiperstensa influye en el peso del bebe
+```{r}
+hipertensa <- df[,"Hiper"]
+datos3 <- data.frame(Pesobajo,hipertensa)
+table(datos3)
+barplot(table(datos3), beside= TRUE,
+        names = c("Peso menor a 2.5Kg", "Peso Mayor a 2.5Kg"),
+        col = c("firebrick", "forestgreen"),
+        main = "Grafico que represena si una Madre Hipertensa\n influye en el peso del Bebe",
+        ylab = c("0.-Madre Hipertensa\n", "1.-Madre no Hipertensa\n")
+)
+```
+
+
+
+```{r}
+plot(table(datos3),
+    main = "Grafica que representa si la raza de la madre\n influye en el peso del Bebe ",
+    col = c("firebrick", "forestgreen"),
+    xlab = c("0.-Peso menor a 2.5K", "1.-Peso Mayor a 2.5Kb"),
+    legend.text = c("Madre Hipertensa", "Madre no Hipertensa")
+)
+```
+

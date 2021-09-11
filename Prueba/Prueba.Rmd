@@ -1,0 +1,131 @@
+---
+title: "Graficos"
+author: "Jesus Castellanos"
+date: "6/16/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Graficos con la funcion 'plot'
+
+```{r Primer_grafico, fig.cap="Grafico que explica el uso de 'plot'"}
+x = c(2,6,4,9,-1)
+y = c(1,8,4,-2,4)
+plot(x,y)
+```
+
+Si no incorporamos vector 'y', 'R' nos va a tomar el parametro de 'x' como si fuese el vector de datos 'y'
+
+
+
+```{r Segundo_grafico}
+plot(2^(1:6), main = "f(x)")
+```
+
+
+$$f(x)=2^{n}$$
+ 
+```{r Raiz cuadrada de f(x), fig.cap="Raiz cuadrada de 'f(x)'"}
+f <- function(x){sqrt(x)}
+plot(f)
+```
+
+
+
+```{r echo=FALSE, fig.cap="Sucesion de Fibonacci"}
+n = 1:20
+fib = (1/sqrt(5))*((1+sqrt(5))/2)^n -(1/sqrt(5))*((1-sqrt(5))/2)^n
+par(mfrow = c(1,2))
+
+plot(fib, xlab = "n", ylab = expression(F[n]), main = "Sucesion de Fibonacci", col = "blue", pch = 21, bg = "lightblue1", cex = 1 )
+
+
+plot(fib, xlab = "n", ylab = expression(F[n]), main = "Sucesion de Fibonacci", col = "red", pch = 21, bg = "lightcoral", cex = 1 )
+
+par(mfrow = c(1,1))
+```
+
+
+```{r echo=FALSE, fig.cap="Uso de type en 'R' "}
+par(mfrow = c(3,2))
+
+x = c(50:59)
+y = c(2,9,25,3,100,77,62,54,19,40)
+
+plot(x,y, pch = 23, cex = 2, col = "blue", type = "p")
+plot(x,y, pch = 23, cex = 2, col = "blueviolet", type = "l")
+plot(x,y, pch = 23, cex = 2, col = "gold", type = "b")
+plot(x,y, pch = 23, cex = 2, col = "deeppink", type = "o")
+plot(x,y, pch = 23, cex = 2, col = "springgreen", type = "h")
+plot(x,y, pch = 23, cex = 2, col = "firebrick1", type = "s")
+
+par(mfrow = c(1,1))
+```
+
+
+```{r fig.cap= "Una Parabola", echo=FALSE}
+y = function(x){x^2-3*x+30}
+
+plot(y, xlim = c(-15,15), main = "Una Parabola", pch = 21,
+     col = "brown",
+     type = "b",
+     bg = "burlywood",
+     xlab = "x",
+     ylab = expression(x^2-3*x+30)
+)
+curve(y, xlim = c(-15, 15),
+      col = "blue",
+      lty = "dashed",
+      main = "Una Parabola",
+      ylab = expression(x^2-3*x+30)
+)
+
+```
+
+
+```{r fig.cap="Grafico ejercicio 3", echo=FALSE}
+x = c(-10, 20)
+y = function(x){5*2^x}
+ plot(y, xlim = x, ylab= expression(5*2^x))
+```
+
+
+```{r fig.cap="Dos rectas con pendiente opuesto", echo=FALSE}
+
+y1 <- function(x){3*x}
+y2 <- function(x){-3*x}
+
+curve(y1, xlim = c(-10,20),
+      ylim = c(-60, 60),
+      col= "blue",
+      main = "Rectas"
+)
+par(new=TRUE)
+curve(y2, xlim = c(-10,20),
+      ylim = c(-60,60),
+      col= "green"
+)
+legend("toplef",
+       col = c("blue","green"),
+       legend = c("y1","y2"),
+       lwd = 3,
+       bty = "l"
+)
+par(new = TRUE)
+abline(h = 0, col = "red", lwd = 5)
+par(new = TRUE)
+
+y3 <- function(x){2*x+7}
+
+curve(y3, xlim= c(-10,20),
+     ylim=c(-60,60),
+     col = "brown",
+     lwd = 2,
+     xlab = " ",
+     ylab = " "
+)
+```
+

@@ -1,0 +1,26 @@
+usarrests <- read.csv("USArrests.csv", stringsAsFactors = FALSE)
+rusarrests <- read.csv("USArrests.csv", stringsAsFactors = FALSE)
+rownames(usarrests) <- usarrests$X  # Le cambio el nombre a todos los reglones de la columna X
+
+usarrests$X <- NULL # Elimino una columna
+
+head(usarrests)
+
+apply(usarrests,2, var) # de esta forma se obtiene la varianza en las columnas.
+
+#Analisis de componentes principales
+acp <- prcomp(usarrests, 
+              center = TRUE,
+              scale = TRUE) #Scale en true no sauda a normalizar los datos
+
+print(acp) #imprme los valores por consola.
+
+
+plot(acp, type = "l") # La mejor menera de ver un analisis de coponentes principales es dibujar una linea.
+
+biplot(acp, scale = 0)# Me ubica por medio de un diagrama donde esta ubicado con los valores del acp.
+pc1 <- apply(acp$rotation[,1]*usarrests, 1, sum) #Calculo de l aprimer componete principal.
+pc2 <- apply(acp$rotation[,2]*usarrests, 1, sum)
+
+usarrests$pc1 <- pc1
+usarrests$pc2 <- pc2

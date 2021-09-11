@@ -1,0 +1,35 @@
+#line charts
+library(ggplot2)
+mtcars <- read.csv("mtcars.csv", stringsAsFactors = FALSE)
+
+plot <- ggplot(mtcars, aes(wt, mpg))
+plot + geom_line() #Dibuja una linea
+plot + geom_line(linetype = "dashed", color = "red") #Dibuja lineas discontinuas
+plot + geom_line(aes(color = as.factor(carb)))
+
+
+#bar Graphs
+bike <- read.csv("daily-bike-rentals.csv")
+bike$season <- factor(bike$season,
+                      levels = c(1,2,3,4),
+                      labels = c("Invierno", "Primavera","Otoño","Invierno"))
+bike$workingday <- factor(bike$workingday,
+                          levels = c(0,1),
+                          labels = c("Dia Libre", "Dia de Trabajo"))
+bike$weathersit <- factor(bike$weathersit,
+                          levels = c(1,2,3),
+                          labels = c("Buen tiempo","Dia Nublado","Mal tiempo"))
+
+library(dplyr)
+bike.sum = bike %>%
+  group_by(season, workingday) %>%
+  summarize(reantal = sum(cnt))
+bike.sum
+
+ggplot(bike.sum, aes(x = season, y = reantal,
+                     fill = workingday, label = scales::comma(reantal))) +
+  geom_bar(show.legend = TRUE, stat = "identity")+
+  labs(title = "Alquieres de bicicletas por estacion y dia")+
+  scale_y_continuous(labels = scales :: comma)+
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+  

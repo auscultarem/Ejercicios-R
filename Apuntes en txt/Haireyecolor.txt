@@ -1,0 +1,32 @@
+```{r echo=FALSE}
+HairEyeColor
+ftable(HairEyeColor)
+
+Male <- HairEyeColor[, ,"Male"]
+Female <- HairEyeColor[, ,"Female"]
+data <- as.table(Male+Female)
+dimnames(data) <- list(
+  Cabello = c("Negro","Cafe","Pelirojo","Rubio"),
+  Ojos    = c("Marrones", "Azules", "Avellana", "Verdes")
+)
+
+data
+colSums(data)
+rowSums(data)
+round(prop.table(colSums(data)), 4)
+mfgrow=c(1,2)
+barplot(prop.table(colSums(data)),
+        col = c("burlywood3","deepskyblue", "goldenrod", "palegreen3"),
+        ylim = c(0,0.4),
+        main = "Frecuencias relativas\n de colores de ojos"
+)
+par(TRUE)
+round(prop.table(rowSums(data)), 4)
+barplot(prop.table(rowSums(data)),
+        col = c("Black","burlywood3", "orangered", "lightgoldenrod1"),
+        ylim = c(0,0.5),
+        main = "Frecuencias relativas\n de colores de Cabello"
+)
+
+
+```

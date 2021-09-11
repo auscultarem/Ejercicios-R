@@ -1,0 +1,58 @@
+install.packages("nnet")
+
+library(nnet)
+library(devtools)
+library(caret)
+
+bh <- read.csv("BostonHousing.csv")
+
+set.seed(2018)
+t.id <- createDataPartition(bh$MEDV, p = 0.7, list = FALSE)
+
+# se realiza un summmary para identificar el rango 
+# de la variabilidad de la respuesta.
+summary(bh$MEDV)
+
+
+# size = 6 nodos intermedios, decay = decaimiento que tiene 
+# que sufrir para salir de un nodo y entrar en otro.
+# maxit = es parar el proceso si no llega a converger.
+# linout -> True indica que que quiero una salida lineal
+# y no logistica
+fit <- nnet(MEDV/50 ~. , data = bh[t.id,], size = 6, decay = 0.1,
+            maxit = 1000, linout= TRUE)
+
+source_url("https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r")
+
+plot(fit, max.sp = TRUE)
+
+sqrt(mean((fit$fitted.values*50 - bh[t.id,"MEDV"])^2))
+
+pred <- predict(fit, bh[-t.id,])
+sqrt(mean((pred*50 - bh[-t.id,"MEDV"])^2))
+
+#k-fold cross validation
+bh <- read.csv("BostonHousing.csv")
+
+kfold.crossval.reg <- function(df, nfolds){
+  fold <- sample(1:nfolds, nrow(df), replace = TRUE)
+  
+  mean.sqr.errs <- sapply(1:nfolds,
+                         kfold.cval.reg.iter,
+                         df, fold)
+  list("MSE "= mean.sqr.errs,
+       "Overall_Mean_Sqr_Error" = mean(mean.sqr.errs),
+       "Std_Mean_Sqr_Error" = sd(mean.sqr.errs))
+}
+
+kfold.cval.reg.iter <- function(k, df, fold){
+  tr.ids <- !fold %in% c(k)
+  test.ids <- fold %in% c(k)
+  mod <- lm(MEDV ~., data = df[tr.ids,])
+  pred <- predict(mod, df[test.ids,])
+  sqr.errs <- (pred - df[test.ids,"MEDV"])^2
+  mean(sqr.errs)
+}
+
+res <- kfold.crossval.reg(bh, 5)
+res

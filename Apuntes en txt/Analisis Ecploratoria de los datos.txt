@@ -1,0 +1,49 @@
+data <- read.csv("auto-mpg.csv",
+                 header = TRUE,
+                 stringsAsFactors = FALSE)
+
+#Concierte a factor  la columna de cilindres
+data$cylinders <- factor(data$cylinders,
+                         levels = c(3,4,5,6,8),
+                         labels = c("3cil","4cil","5cil","6cil","8cil"))
+
+#muesra un resumen proporcionando los 4 estadisticos basicos.
+summary(data)
+
+#Nos muestra como esta estructurado el dataframe.
+str(data)
+
+#Podemos acceder a solo una columna y realizar un resumen de los datos de esa columna.
+summary(data$cylinders)
+
+#Si accedemos a las millas por galon de una sola columna obtenemos los estadisicos basicos.
+summary(data$mpg)
+
+#Tambien podemos acceder de forma individual a uan estructura de una sola columna.
+str(data$cylinders)
+
+install.packages(c("modeest","raster","moments"))
+library(modeest)
+library(raster)
+library(moments)
+
+X = data$mpg
+
+### Medidas de centralizacion
+mean(X)
+median(X)
+mfv(X)
+quantile(X)
+
+### Medidas de dispersion.
+var(X) #varianza
+sd(X) #desviacion standar
+cv(X) #Coeficiente de variacion.
+
+
+###Medidas de asimetria
+
+skewness(X) #Asimetria
+kurtosis(X) #Kurtois
+
+

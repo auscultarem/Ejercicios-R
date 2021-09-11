@@ -1,0 +1,53 @@
+---
+title: "Esposos"
+author: "Jesus Castellanos"
+date: "7/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Con estos cmandos se carga un dataframe y se comienza a segregar las partes importantes del dataframe.
+
+```{r}
+#getwd()# leo el directorio de trabajo
+df <- read.table( "C:/Users/auscu/OneDrive/Documents/Ejercicios R/Esposos/husbandwife.txt",#Lectura de archivos
+      header = TRUE,#Si los arrchivos viene con cabecera se pone TRUE
+      col.names = c("EdadH","AlturaH","EdadM","AlturaM","EHCasaron"), # renombra las columnas
+      
+)
+
+df <- df[(df$EHCasaron != "*"),] # segrega todos los elementos que tengan en el renglon*
+df <- df[(df$EdadM != "*"), ] # segrega todos los elementos que tengan en el renglon *
+str(df) #nos dice que tipo de datos tiene 
+chars <- sapply(df, is.character) 
+df[ ,chars] <- as.data.frame(apply(df[,chars] , 2 , as.numeric)) # convierte todo un data frame a numeric
+#df$EdadH <- as.numeric(df$EdadH) # convierte una columna como numerica
+str(df)
+
+```
+
+Despues de ordenar, limpiar y convetir los datos se puede empezar a trabajar con el data frame.
+
+obtencion de frecuencias del data frame con la funcion table
+```{r}
+table(df$EdadH)
+barplot(table(df$EdadH),
+        main = "Grafico de la Muetsra de la Edad de los Hombres",
+        xlab = "Edad de los hombres",
+        ylab = "Frecuencia absoluta"
+)
+```
+
+En este grafico se muestra la edad a la que los Hombres se casaron.
+
+```{r fig.cap="Grafico que muestra la edad a la que los Hombres se casaron"}
+barplot(table(df$EHCasaron),
+        main = "Grafico que muetsra la edad a la que los Hombres decidieron Casarse",
+        xlab = "Edad de los Hombres",
+        ylab = "Frecuecia Absoluta"
+)
+```
+

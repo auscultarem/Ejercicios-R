@@ -1,0 +1,60 @@
+auto <- read.csv("auto-mpg.csv")
+auto$cylinders <- factor(auto$cylinders,
+                         levels = c(3,4,5,6,8),
+                         labels = c("3cil","4cil","5cil","6cil","8cil"))#Concierte el campo de cylinders como factor. 
+
+attach(auto) #Funcion que permite aceder a las columnas de data frame sin estar escrbiendo dolla al inicio.
+
+head(cylinders)
+
+#El histograma nos permite graficar un diagrama de frecuncias.
+hist(acceleration,
+     col = rainbow(12),
+     xlab = "Aceleracion",
+     ylab = "Frecuencias",
+     main = "Histograma de las aceleraciones",
+     breaks = 16)
+
+#Boxplot
+boxplot(mpg, xlab = "Milllas por Galon" )
+boxplot(mpg ~ model_year,
+        xlab = "Millas por Galon") # se puede hacer un boxplo en funcion de una columa del data frame.
+boxplot(mpg ~ cylinders, xlab = "Consumo de umero de cilindros")
+
+
+#Scatterplot
+plot(mpg ~ horsepower) # el valor de mpg tomra el vaor de variable dependendeinte. tomara el valor dle eje de las Y.
+linearmodel <- lm(mpg ~ horsepower)
+abline(linearmodel)
+
+#Agregar colores para cada cilindrada
+with(subset(auto, cylinders == "8cil"),
+            points(horsepower, mpg, col = "red"))
+with(subset(auto, cylinders == "6cil"),
+     points(horsepower, mpg, col = "yellow"))
+with(subset(auto, cylinders == "5cil"),
+     points(horsepower, mpg, col = "green"))
+with(subset(auto, cylinders == "4cil"),
+     points(horsepower, mpg, col = "blue"))
+with(subset(auto, cylinders == "3cil"),
+    points(horsepower, mpg))
+
+#Matriz de Scatterplots
+pairs(~mpg+displacement+horsepower+weight) #Matriz de scatterplot.
+
+hist(mpg, prob = TRUE) # esta funcion permite dibujar un histograma y prob= Ture grafica las frecuncias relativas.
+density(mpg)
+lines(density(mpg))
+
+
+#Combinacion de grafigos par
+old.par <- par
+old.par
+par(mfrow = c(1,2))
+
+with(auto,{
+  plot(mpg ~ weight, main = "Peso vs Consumo")
+  plot(mpg ~ acceleration, main = "Aceleracion vs Consumo")
+})
+
+

@@ -1,0 +1,21 @@
+```{r}
+getwd()
+df <- read.table("/home/jovyan/husbandwife.txt", header = TRUE,
+                 col.names = c("EdadH", "EstaturaH", "EdadM", "EstaturaM", "EHM"),
+                 na.strings = "NA", blank.lines.skip = TRUE,
+                 stringsAsFactors = FALSE, dec = "."
+)
+#head(df,5)
+#str(df)
+#df
+
+df <- df[(df$EHM != "*") ,] #segrega todo lo que tiene asteriscos en el campo EHM
+df <- df[(df$EdadM != "*"),] #segrega todo lo que tiene asteriscos en el campo EdadM
+#df
+str(df)
+chars <- sapply(df, is.character)
+df[ ,chars] <- as.data.frame(apply(df[ ,chars],2 , as.numeric)) #Convierte todo un dataframe a numeric
+#df$EdadH <- as.numeric(df$EdadH) #Convierte toda una columna a data frame
+str(df)
+sapply(subset(df, select = 1:5), mean) #SE obtiene la media de mi dataframe
+```

@@ -1,0 +1,20 @@
+install.packages("jsonlite")
+library(jsonlite)
+
+dat.1 <- fromJSON("students.json")
+dat.2 <- fromJSON("student-courses.json")
+
+install.packages("curl")
+library(curl)
+url <- "https://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote?format=json"
+currencies <- fromJSON(url)
+
+url <- "http://www.floatrates.com/daily/usd.json"
+currencies <- fromJSON(url)
+
+currencie_data <- currencies$mxn$name
+head(dat.1, 3)
+dat.1$Email # Accedo solo a informacion del email.
+
+currency.data[1:5, ] #Elijo los primero 5 renglones pero con todas las columnas del dataframe
+dat.1[c(2,5,8), ] #Con este conjunto selecciono las filas 2,5,8 con todas las columnas.

@@ -1,0 +1,21 @@
+#Scater Plots
+install.packages("ggplot2")
+library(ggplot2)
+
+auto <- read.csv("auto-mpg.csv", stringsAsFactors = FALSE)
+auto$cylinders <- factor(auto$cylinders,
+                         labels = c("3C", "4C","5C","6C","8C"))
+
+head(auto)
+
+par(mfrow = c(1,1))
+#uso del afuncion ggplot
+plot <- ggplot(auto, aes(weight,mpg))
+plot + geom_point()
+plot + geom_point(alpha = 1/2, size =3.5, #Modifica la trasparencia y el tamaño de la representacion factores
+                  aes(color = factor(cylinders)))+ #Dibuja cada factor con diferente color
+     geom_smooth(method = "lm", se= FALSE, col="green") + #Dibuja una recta de regresion encima.
+     facet_grid(cylinders~.)+ #Dibuja un grafico difeernte para cada categoria
+     theme_bw(base_family = "Calibri", base_size = 10)+ # definir letra
+     labs(x ="Peso") + labs(y = "Millas por Galeon")+
+     labs(title = "Consumo vs Peso")

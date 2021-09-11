@@ -1,0 +1,12 @@
+dat <- read.csv("rmse.csv")
+
+rmse <- sqrt(mean((dat$price -dat$pred)^2))
+
+plot(dat$price, dat$pred, xlab= "Actual", ylab= "Predicho")
+abline(0,1)
+
+rsme <- function(actual, predicted) {
+  return(sqrt(mean((actual -predicted)^2)))
+}
+
+rsme(dat$price, dat$pred)

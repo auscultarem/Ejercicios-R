@@ -1,0 +1,52 @@
+install.packages("caret")
+library(caret)
+
+data <- read.csv("boston-housing-classification.csv")
+training.ids <- createDataPartition(data$MEDV, p = 0.8, list = FALSE) #Separo el 80% de las muestras
+data.training <- data[training.ids,] #le asigno a data.training el 80% de las muestras del data frame.
+data.validation <- data[-training.ids,] # Me quedo con el  20% de las muestras.
+
+
+training.ids.2 <- createDataPartition(data$MEDV, p= 0.7, list = FALSE) #Separo el 70% de las muestras
+data.training.2 <- data[training.ids.2,] # asigno el 70% de las muestras a data training
+temp <- data[-training.ids.2,] # asigno el 30% de las muestras a temp
+
+
+validation.ids.2 <- createDataPartition(temp$MEDV, p = .5, list = FALSE)#separo el 50% de las muestras
+data.validation <- temp[validation.ids.2,] # Asigno el 50% d las muestras a data validation
+data.testing <- temp[-validation.ids.2,] #Asigno el 50% de la muestra a data testing.
+
+data2 <- read.csv("boston-housing-classification.csv")
+
+training.ids.3 <- createDataPartition(data2$MEDV_CAT, p = 0.7, list = FALSE) #Creo una particion con el 70% de la mueestras
+data.training.3 <- data2[training.id.3,] #asigno el 70% de las muestras a data2
+data.validation <- data2[-training.ids.3,] # asigno el  30% de las muestras a validacion
+
+#Particion en dos trozos
+rda.cb.partition2 <- function(dataframe, target.index, prob){
+  library(caret)
+  training.ids <- createDataPartition( dataframe[,target.index], p = prob, list= FALSE)
+  list(train = dataframe[training.ids,], val = dataframe[-training.ids,])
+}
+
+#paricion en tres trozos
+rda.cb.partition3 <- function(dataframe, target.index, prob.train, prob.val){
+  library(caret)
+  training.ids <- createDataPartition(dataframe[,target.index], p= prob.train, list = FALSE)
+  train.data <- dataframe[training.ids,]
+  temp <- dataframe[-training.ids,]
+  validation.ids <- createDataPartition(temp[,target.index], p= prob.val, list = FALSE)
+  list(train = train.data, val = temp[validation.ids,] , test = temp[-validation.ids,])
+}
+
+data.1 <- rda.cb.partition2(data, 14, 0.8)
+data.2 <- rda.cb.partition3(data, 14, 0.7, 0.5)
+
+head(data.1$train)
+head(data.1$val)
+
+head(data.2$train)
+head(data.2$val)
+head(data.2$test)
+
+sample1 <- sample(data$CRIM, 40, replace = FALSE)

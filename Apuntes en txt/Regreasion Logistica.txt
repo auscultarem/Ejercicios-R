@@ -1,0 +1,17 @@
+library(caret)
+
+bh <- read.csv("boston-housing-logistic.csv")
+bh$CLASS <- factor(bh$CLASS, levels = c(0,1))
+
+set.seed(2018)
+t.id <- createDataPartition(bh$CLASS, p = 0.7, list = FALSE)
+
+mod <- glm(CLASS ~., data = bh[t.id,], family = binomial)
+
+summary(mod)
+
+#probabilidades de que esas variable s de entrada sean un exito
+bh[-t.id,"PROB_SUCCES"] <- predict(mod, newdata = bh[-t.id,], type = "response")
+bh[-t.id,"PRED_50"] <- ifelse(bh[-t.id, "PROB_SUCCES"] >= 0.5, 1, 0)
+
+table(bh[-t.id,"CLASS"], bh[-t.id,"PRED_50"], dnn = c("Actual","Predicho"))

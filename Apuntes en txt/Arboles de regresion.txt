@@ -1,0 +1,77 @@
+install.packages("rpart")
+install.packages("rpart.plot")
+install.packages("caret")
+
+library(rpart)
+library(rpart.plot)
+library(caret)
+
+bh <- read.csv("BostonHousing.csv")
+
+
+#Crear conjunto de entrenamiento
+t.id <- createDataPartition(bh$MEDV, p = 0.7, list = FALSE)
+
+#rpart para realizar el arbol de regresion
+bfit <- rpart(MEDV ~. ,data = bh[t.id,])
+bfit
+
+#vamos a graficar el arbol
+par(mfrow = c(1,1))
+prp(bfit, type = 2, nn= TRUE,
+    fallen.leaves = TRUE, faclen = 4,
+    varlen = 8, shadow.col = "gray")
+
+#Graficar el CPtable.
+bfit$cptable
+
+plotcp(bfit)
+
+#aqui ya se ligio un arbol menos complicado.
+bfitpruned <- prune(bfit, cp= 0.01981507)
+
+prp(bfitpruned, type = 2, nn= TRUE,
+    fallen.leaves = TRUE, faclen = 4,
+    varlen = 8, shadow.col = "gray")
+
+
+preds <- predict(bfitpruned, bh[-t.id,])
+sqrt(mean((preds - bh[-t.id,]$MEDV)^2))
+
+preds_1 <- predict(bfitpruned, bh[t.id,])
+sqrt(mean((preds_1 - bh[t.id,]$MEDV)^2))
+
+
+ed <- read.csv("education.csv")
+ed$region <- factor(ed$region)
+
+#Crear el conjunto de entrenamiento
+t.id <- createDataPartition(ed$expense, p=0.7, list = FALSE)
+
+#modelo ajustado
+fit <- rpart(expense ~ region+urban+income+under18, data = ed[t.id,])
+
+# Representar el arbol
+prp(fit, type = 2, nn=TRUE,
+    fallen.leaves = TRUE, faclen = 4, varlen = 8, shadow.col = "gray")
+
+#Bagging o bootstrapaggregation.
+install.packages("ipred")
+library(ipred)
+
+bagging.fit <- bagging(MEDV ~., data = bh[t.id,])
+
+#Predecir valores
+prediction.t <-predict(bagging.fit, bh[t.id,])
+sqrt(mean((prediction.t - bh[t.id,]$MEDV)^2))
+
+prediction.v <- predict(bagging.fit, bh[-t.id,])
+sqrt(mean((prediction.v - bh[-t.id,]$MEDV)^2))
+
+#Boosting 
+install.packages("gbm")
+library(gbm)
+
+bgmfit <- gbm(MEDV ~., data = bh, distribution = "gaussian")
+predict.t1 <- predict(bgmfit, bh, n.trees = 10)
+sqrt(mean((predict.t1 - bh$MEDV)^2))

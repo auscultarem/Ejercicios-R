@@ -1,0 +1,11 @@
+## Frecuencias Relativas
+
+```{r}
+H <- rep("H", 6)
+M <- rep("M", 14)
+vector <- c(H,M)
+#Calcula la frecuencia basoluta por factor
+table(vector)
+#Calcula la frecuencia relativa por factor
+prop.table(table(vector))
+```
